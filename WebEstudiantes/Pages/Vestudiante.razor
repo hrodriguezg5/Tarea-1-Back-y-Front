@@ -1,0 +1,387 @@
+﻿@page "/v_estudiante"
+@using WebEstudiantes.Data
+@using System.Text.Json
+@using Newtonsoft.Json
+@inject IHttpClientFactory ClientFactory
+@using System.Net.Http.Json
+@inject IJSRuntime JS
+
+<PageTitle>Formulario de Estudiantes</PageTitle>
+
+<h1>Formulario de Clientes</h1>
+
+@if (getEstudianteError || iestudiantes is null)
+{
+    <p>No se encontró la api.</p>
+}
+else
+{
+    <button type="button" class="btn btn-primary" @onclick="AbrirModal">Agregar</button><br><br>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Carne</th>
+                <th>Nombres</th>
+                <th>Apellidos</th>
+                <th>Direccion</th>
+                <th>Telefono</th>
+                <th>Correo Electrónico</th>
+                <th>Fecha de Nacimiento</th>
+                <th>Tipo de Sangre</th>
+            </tr>
+        </thead>
+        <tbody>
+        @foreach (var estudiante in iestudiantes)
+        {
+            <tr @onclick="() => SeleccionarEstudiante(estudiante)">
+                <td>@estudiante.Carne</td>
+                <td>@estudiante.Nombres</td>
+                <td>@estudiante.Apellidos</td>
+                <td>@estudiante.Direccion</td>
+                <td>@estudiante.Telefono</td>
+                <td>@estudiante.Correo_Electronico</td>
+                <td>@estudiante.Fecha_Nacimiento</td>
+                <td>@estudiante.Tipo_Sangre?.Sangre</td>
+            </tr>
+        }
+        </tbody>
+    </table>
+}
+
+<!-- Modal para agregar o modificar estudiante -->
+@if (isModalOpen)
+{
+    <div class="modal fade show d-block" style="background-color: rgba(0, 0, 0, 0.5);" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Agregar o Modificar Estudiante</h5>
+                    <button type="button" class="btn-close" @onclick="CerrarModal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="id" hidden>ID</label>
+                        <input type="text" @bind="var_idestudiante" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <label for="carne">Carne</label>
+                        <input type="text" @bind="var_carne" class="form-control" />
+                        @if (validationMessage != null)
+                        {
+                            <span class="text-danger">@validationMessage</span>
+                        }
+                    </div>
+                    <div class="form-group">
+                        <label for="nombres">Nombres</label>
+                        <input type="text" @bind="var_nombres" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <label for="apellidos">Apellidos</label>
+                        <input type="text" @bind="var_apellidos" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <label for="direccion">Dirección</label>
+                        <input type="text" @bind="var_direccion" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <label for="telefono">Teléfono</label>
+                        <input type="tel" @bind="var_telefono" class="form-control" pattern="[0-9]{8}" />
+                    </div>
+                    <div class="form-group">
+                        <label for="correo_electronico">Correo Electrónico</label>
+                        <input type="email" @bind="var_correo_electronico" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <label for="fn">Fecha de Nacimiento</label>
+                        <input type="date" @bind="var_fn" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <label for="tipo_sangre">Tipo de Sangre</label>
+                        <select @bind="var_tipo_sangre" class="form-control">
+                            <option value="0"> -- Seleccione -- </option> <!-- El valor '0' es el valor predeterminado -->
+                            @foreach (var tipo in tiposSangre)
+                            {
+                                <option value="@tipo.Id_tiposangre">@tipo.Sangre</option>
+                            }
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-info" @onclick="Crear">Guardar</button>
+                    <button type="button" class="btn btn-primary" @onclick="Modificar">Modificar</button>
+                    <button type="button" class="btn btn-danger" @onclick="Eliminar">Eliminar</button>
+                    <button type="button" class="btn btn-secondary" @onclick="CerrarModal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<script>
+    function confirmarEliminacion() {
+        return confirm("¿Estás seguro de que deseas eliminar este registro?");
+    }
+</script>
+
+@code {
+    private string? url = "https://localhost:7065/api/Estudiantes";
+    private string? urlTiposSangre = "https://localhost:6532/api/TiposSangre"; // URL de tipos de sangre
+
+    private Int32 var_idestudiante, var_tipo_sangre = 0;  // Inicializamos var_tipo_sangre a 0
+    private string? var_carne, var_nombres, var_apellidos, var_direccion, var_telefono, var_correo_electronico;
+    private DateTime? var_fn;
+
+    private IEnumerable<Estudiante>? iestudiantes = Array.Empty<Estudiante>();
+    private IEnumerable<Tipos_sangre>? tiposSangre = Array.Empty<Tipos_sangre>(); // Lista para los tipos de sangre
+
+    private bool getEstudianteError;
+    private bool shouldRender;
+    private bool isModalOpen = false; // Controla la visibilidad del modal
+    private string? validationMessage;
+
+    // Método para Crear un nuevo estudiante
+    private async Task Crear()
+    {
+        if (ValidarCarne() && var_tipo_sangre != 0)  // Verificamos que un tipo de sangre válido fue seleccionado
+        {
+            var client = ClientFactory.CreateClient();
+            var addItem = new Estudiante
+            {
+                Carne = var_carne,
+                Nombres = var_nombres,
+                Apellidos = var_apellidos,
+                Direccion = var_direccion,
+                Telefono = var_telefono,
+                Correo_Electronico = var_correo_electronico,
+                Id_tipo = var_tipo_sangre,
+                Fecha_Nacimiento = var_fn
+            };
+
+            var response = await client.PostAsJsonAsync(url, addItem);
+
+            // Verifica si la creación fue exitosa
+            if (response.IsSuccessStatusCode)
+            {
+                await OnInitializedAsync(); // Recargar la lista de estudiantes
+                CerrarModal(); // Cerrar el modal después de guardar
+            }
+            else
+            {
+                // Mostrar un mensaje de error si la creación falla
+                var errorContent = await response.Content.ReadAsStringAsync();
+                Console.WriteLine($"Error al crear el estudiante: {errorContent}");
+            }
+        }
+        else
+        {
+            Console.WriteLine("Error: Tipo de sangre no seleccionado o carné inválido.");
+        }
+        Console.WriteLine($"Tipo de sangre seleccionado: {var_tipo_sangre}");
+        await OnInitializedAsync(); // Recargar la lista de estudiantes
+    }
+
+    private async Task Modificar()
+    {
+        if (ValidarCarne() && var_tipo_sangre != 0)  // Verificamos que un tipo de sangre válido fue seleccionado
+        {
+            var client = ClientFactory.CreateClient();
+            var updateItem = new Estudiante
+            {
+                Id_estudiantes = var_idestudiante,  // Asegurarse que el ID del estudiante es correcto
+                Carne = var_carne,
+                Nombres = var_nombres,
+                Apellidos = var_apellidos,
+                Direccion = var_direccion,
+                Telefono = var_telefono,
+                Correo_Electronico = var_correo_electronico,
+                Id_tipo = var_tipo_sangre,
+                Fecha_Nacimiento = var_fn
+            };
+    
+            // Enviar solicitud de actualización
+            var response = await client.PutAsJsonAsync($"{url}/{var_idestudiante}", updateItem);
+    
+            // Verificar si la actualización fue exitosa
+            if (response.IsSuccessStatusCode)
+            {
+                CerrarModal();
+                await OnInitializedAsync(); // Recargar la lista de estudiantes
+            }
+            else
+            {
+                // Mostrar un mensaje de error si la actualización falla
+                var errorContent = await response.Content.ReadAsStringAsync();
+                Console.WriteLine($"Error al actualizar el estudiante: {errorContent}");
+            }
+        }
+    }
+    
+    private async Task Eliminar()
+    {
+        var confirmacion = await JS.InvokeAsync<bool>("confirmarEliminacion");
+        if (confirmacion)
+        {
+            var client = ClientFactory.CreateClient();
+    
+            // Enviar solicitud de eliminación
+            var response = await client.DeleteAsync($"{url}/{var_idestudiante}");
+    
+            // Verificar si la eliminación fue exitosa
+            if (response.IsSuccessStatusCode)
+            {
+                CerrarModal();
+                await OnInitializedAsync(); // Recargar la lista de estudiantes después de la eliminación
+            }
+            else
+            {
+                // Mostrar un mensaje de error si la eliminación falla
+                var errorContent = await response.Content.ReadAsStringAsync();
+                Console.WriteLine($"Error al eliminar el estudiante: {errorContent}");
+            }
+        }
+    }
+
+    private void SeleccionarEstudiante(Estudiante estudiante)
+    {
+        // Asegúrate de que el ID del estudiante se esté asignando correctamente
+        var_idestudiante = estudiante.Id_estudiantes;
+        Console.WriteLine($"Seleccionado estudiante con ID: {var_idestudiante}"); // Para depuración
+        var_carne = estudiante.Carne;
+        var_nombres = estudiante.Nombres;
+        var_apellidos = estudiante.Apellidos;
+        var_direccion = estudiante.Direccion;
+        var_telefono = estudiante.Telefono;
+        var_correo_electronico = estudiante.Correo_Electronico;
+        var_fn = estudiante.Fecha_Nacimiento;
+        var_tipo_sangre = estudiante.Id_tipo;
+    
+        AbrirModal(); // Abre el modal con los datos pre-llenados
+    }
+
+    private void AbrirModal()
+    {
+        isModalOpen = true;
+    }
+
+    private void CerrarModal()
+    {
+        isModalOpen = false;
+        // Limpiar los campos
+        var_idestudiante = 0;
+        var_carne = var_nombres = var_apellidos = var_direccion = var_telefono = var_correo_electronico = null;
+        var_fn = null;
+        var_tipo_sangre = 0;
+    }
+
+    private bool ValidarCarne()
+    {
+        var regex = new System.Text.RegularExpressions.Regex(@"^E\d{3}$");
+        if (!regex.IsMatch(var_carne))
+        {
+            validationMessage = "El formato del Carné debe ser entre E001 y E999 (ej: E001).";
+            return false;
+        }
+        validationMessage = null;
+        return true;
+    }
+
+    protected override bool ShouldRender() => shouldRender;
+    
+protected override async Task OnInitializedAsync()
+{
+    var client = ClientFactory.CreateClient();
+    
+    // Obtener estudiantes
+    var response = await client.GetAsync(url);
+    if (response.IsSuccessStatusCode)
+    {
+        var responseBody = await response.Content.ReadAsStringAsync();
+        var estudiantesList = new List<Estudiante>();
+
+        // Deserializar el JSON manualmente
+        var jsonDocument = JsonDocument.Parse(responseBody);
+        //var valuesElement = jsonDocument.RootElement.GetProperty("$values");
+
+        foreach (var element in jsonDocument.RootElement.EnumerateArray())
+        {
+            var estudiante = new Estudiante();
+
+            if (element.TryGetProperty("id_estudiante", out var idEstudiante))
+                estudiante.Id_estudiantes = idEstudiante.GetInt32();
+
+            if (element.TryGetProperty("carne", out var carne))
+                estudiante.Carne = carne.GetString();
+
+            if (element.TryGetProperty("nombres", out var nombres))
+                estudiante.Nombres = nombres.GetString();
+
+            if (element.TryGetProperty("apellidos", out var apellidos))
+                estudiante.Apellidos = apellidos.GetString();
+
+            if (element.TryGetProperty("direccion", out var direccion))
+                estudiante.Direccion = direccion.GetString();
+
+            if (element.TryGetProperty("telefono", out var telefono))
+                estudiante.Telefono = telefono.GetString();
+
+            if (element.TryGetProperty("correo_electronico", out var correo))
+                estudiante.Correo_Electronico = correo.GetString();
+
+            if (element.TryGetProperty("id_tipo_sangre", out var idTipoSangre))
+                estudiante.Id_tipo = idTipoSangre.GetInt32();
+
+            if (element.TryGetProperty("fecha_nacimiento", out var fechaNacimiento))
+                estudiante.Fecha_Nacimiento = fechaNacimiento.GetDateTime();
+
+            // Verificar el objeto anidado tipo_Sangre
+            if (element.TryGetProperty("tipo_Sangre", out var tipoSangreElement))
+            {
+                var tipoSangre = new Tipo_sangre();
+                if (tipoSangreElement.TryGetProperty("id_tipo_sangre", out var idTipo))
+                    tipoSangre.Id_tiposangre = idTipo.GetInt32();
+
+                if (tipoSangreElement.TryGetProperty("sangre", out var sangre))
+                    tipoSangre.Sangre = sangre.GetString();
+
+                estudiante.Tipo_Sangre = tipoSangre;
+            }
+
+            estudiantesList.Add(estudiante);
+        }
+
+        iestudiantes = estudiantesList;
+    }
+    else
+    {
+        getEstudianteError = true;
+    }
+
+    // Obtener tipos de sangre
+    var responseTiposSangre = await client.GetAsync(urlTiposSangre);
+    if (responseTiposSangre.IsSuccessStatusCode)
+    {
+        var responseBodyTiposSangre = await responseTiposSangre.Content.ReadAsStringAsync();
+        
+        // Deserialización manual
+        var jsonDocumentTiposSangre = JsonDocument.Parse(responseBodyTiposSangre);
+        var tiposSangreList = new List<Tipos_sangre>();
+
+        foreach (var element in jsonDocumentTiposSangre.RootElement.EnumerateArray())
+        {
+            var tipoSangre = new Tipos_sangre();
+
+            if (element.TryGetProperty("id_tipo_sangre", out var idTipoSangre))
+                tipoSangre.Id_tiposangre = idTipoSangre.GetInt32();
+
+            if (element.TryGetProperty("sangre", out var sangre))
+                tipoSangre.Sangre = sangre.GetString();
+
+            tiposSangreList.Add(tipoSangre);
+        }
+
+        tiposSangre = tiposSangreList;
+    }
+
+    shouldRender = true;
+}
+}

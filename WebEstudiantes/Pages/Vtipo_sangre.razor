@@ -1,0 +1,123 @@
+﻿@page "/v_tipo_sangre"
+@using WebEstudiantes.Data
+@using System.Text.Json
+@using System.Text.Json.Serialization
+@inject IHttpClientFactory ClientFactory
+@using System.Net.Http.Json
+
+<PageTitle>Formulario Tipos de Sangre</PageTitle>
+
+<h1>Tipo de sangre</h1>
+
+@if (getTipo_SangreError || itipos_sangre is null)
+{
+    <p>No se encontro la API.</p>
+}
+else
+{
+        <form>
+        <label for="lbl_id_tiposangre" class="form-label">ID:</label>
+        <input @bind="var_tiposangre" type="text" class="form-control" placeholder="0" readonly>
+        <label for="lbl_sangre" class="form-label">Tipo de Sangre:</label>
+        <input @bind="var_sangre" type="text" class="form-control" placeholder="A+">
+        <br>
+        <button type="button" @onclick="Crear" class="btn btn-success">Crear</button>
+        <button type="button" @onclick="Actualizar" class="btn btn-warning">Actualizar</button>
+        <button type="button" @onclick="Eliminar" class="btn btn-danger">Eliminar</button>
+    </form>
+    <br>
+    <table class="table">
+        <thead>
+            <tr>
+                <th width=20></th>
+                <th width=20>Número</th>
+                <th>Tipo de Sangre</th>
+            </tr>
+        </thead>
+        <tbody>
+        @foreach (var tiposangre in itipos_sangre)
+        {
+            <tr>
+            <td><button type="button" @onclick="() => enviarParametros(tiposangre.Id_tiposangre, tiposangre.Sangre)" class="btn btn-primary"><i class="oi oi-pencil-square"> Editar </i></button></td>
+            <td>@tiposangre.Id_tiposangre</td>
+            <td>@tiposangre.Sangre</td>
+            </tr>
+        }
+        </tbody>
+    </table>
+}
+
+
+@code {
+    private string? url = "https://localhost:6532/api/TiposSangre";
+    private Int32 var_tiposangre;
+    private string? var_sangre;
+
+    //Enviar parametros a variables locales
+    void enviarParametros(Int32 id, string? san){
+        var_tiposangre = id;
+        var_sangre = san;
+    } 
+
+    // Metodo para Crear un nuevo cliente
+    private async Task Crear(){
+        var client = ClientFactory.CreateClient();
+        var addItem = new Tipo_sangre
+        {
+            Sangre = var_sangre
+        };
+
+        await client.PostAsJsonAsync(url, addItem);
+        await OnInitializedAsync();
+    }  
+
+    // Metodo para Actualizar un cliente
+    private async Task Actualizar(){
+        var client = ClientFactory.CreateClient();
+        var addItem = new Tipo_sangre
+        {
+            Id_tiposangre = var_tiposangre,
+            Sangre = var_sangre
+        };
+
+        await client.PutAsJsonAsync($"{url}/{var_tiposangre}", addItem);
+        await OnInitializedAsync();
+    }
+    // Metodo para Eliminar un Estudiante
+    private async Task Eliminar(){
+        var client = ClientFactory.CreateClient();
+        await client.DeleteAsync($"{url}/{var_tiposangre}");
+        await OnInitializedAsync();
+    }
+
+    private IEnumerable<Tipo_sangre>? itipos_sangre = Array.Empty<Tipo_sangre>();
+    private bool getTipo_SangreError;
+    private bool shouldRender;
+    protected override bool ShouldRender() => shouldRender;
+
+// Metodo para leer los datos del API
+    protected override async Task OnInitializedAsync()
+    {
+        var request = new HttpRequestMessage(HttpMethod.Get,
+            url);
+        request.Headers.Add("Accept", "application/vnd.github.v3+json");
+        request.Headers.Add("User-Agent", "HttpClientFactory-Sample");
+
+        var client = ClientFactory.CreateClient();
+
+        var response = await client.SendAsync(request);
+
+        if (response.IsSuccessStatusCode)
+        {
+            using var responseStream = await response.Content.ReadAsStreamAsync();
+            itipos_sangre = await JsonSerializer.DeserializeAsync
+                <IEnumerable<Tipo_sangre>>(responseStream);
+        }
+        else
+        {
+            getTipo_SangreError = true;
+        }
+
+        shouldRender = true;
+    }
+}

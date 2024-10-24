@@ -1,0 +1,68 @@
+C:\xampp\htdocs\WebEstudiantes\bin\Debug\net7.0\appsettings.Development.json
+C:\xampp\htdocs\WebEstudiantes\bin\Debug\net7.0\appsettings.json
+C:\xampp\htdocs\WebEstudiantes\bin\Debug\net7.0\WebEstudiantes.staticwebassets.runtime.json
+C:\xampp\htdocs\WebEstudiantes\bin\Debug\net7.0\WebEstudiantes.exe
+C:\xampp\htdocs\WebEstudiantes\bin\Debug\net7.0\WebEstudiantes.deps.json
+C:\xampp\htdocs\WebEstudiantes\bin\Debug\net7.0\WebEstudiantes.runtimeconfig.json
+C:\xampp\htdocs\WebEstudiantes\bin\Debug\net7.0\WebEstudiantes.dll
+C:\xampp\htdocs\WebEstudiantes\bin\Debug\net7.0\WebEstudiantes.pdb
+C:\xampp\htdocs\WebEstudiantes\obj\Debug\net7.0\WebEstudiantes.GeneratedMSBuildEditorConfig.editorconfig
+C:\xampp\htdocs\WebEstudiantes\obj\Debug\net7.0\WebEstudiantes.AssemblyInfoInputs.cache
+C:\xampp\htdocs\WebEstudiantes\obj\Debug\net7.0\WebEstudiantes.AssemblyInfo.cs
+C:\xampp\htdocs\WebEstudiantes\obj\Debug\net7.0\WebEstudiantes.csproj.CoreCompileInputs.cache
+C:\xampp\htdocs\WebEstudiantes\obj\Debug\net7.0\WebEstudiantes.MvcApplicationPartsAssemblyInfo.cache
+C:\xampp\htdocs\WebEstudiantes\obj\Debug\net7.0\WebEstudiantes.RazorAssemblyInfo.cache
+C:\xampp\htdocs\WebEstudiantes\obj\Debug\net7.0\WebEstudiantes.RazorAssemblyInfo.cs
+C:\xampp\htdocs\WebEstudiantes\obj\Debug\net7.0\staticwebassets.build.json
+C:\xampp\htdocs\WebEstudiantes\obj\Debug\net7.0\staticwebassets.development.json
+C:\xampp\htdocs\WebEstudiantes\obj\Debug\net7.0\staticwebassets\msbuild.WebEstudiantes.Microsoft.AspNetCore.StaticWebAssets.props
+C:\xampp\htdocs\WebEstudiantes\obj\Debug\net7.0\staticwebassets\msbuild.build.WebEstudiantes.props
+C:\xampp\htdocs\WebEstudiantes\obj\Debug\net7.0\staticwebassets\msbuild.buildMultiTargeting.WebEstudiantes.props
+C:\xampp\htdocs\WebEstudiantes\obj\Debug\net7.0\staticwebassets\msbuild.buildTransitive.WebEstudiantes.props
+C:\xampp\htdocs\WebEstudiantes\obj\Debug\net7.0\staticwebassets.pack.json
+C:\xampp\htdocs\WebEstudiantes\obj\Debug\net7.0\scopedcss\Shared\MainLayout.razor.rz.scp.css
+C:\xampp\htdocs\WebEstudiantes\obj\Debug\net7.0\scopedcss\Shared\NavMenu.razor.rz.scp.css
+C:\xampp\htdocs\WebEstudiantes\obj\Debug\net7.0\scopedcss\bundle\WebEstudiantes.styles.css
+C:\xampp\htdocs\WebEstudiantes\obj\Debug\net7.0\scopedcss\projectbundle\WebEstudiantes.bundle.scp.css
+C:\xampp\htdocs\WebEstudiantes\obj\Debug\net7.0\WebEstudiantes.dll
+C:\xampp\htdocs\WebEstudiantes\obj\Debug\net7.0\refint\WebEstudiantes.dll
+C:\xampp\htdocs\WebEstudiantes\obj\Debug\net7.0\WebEstudiantes.pdb
+C:\xampp\htdocs\WebEstudiantes\obj\Debug\net7.0\WebEstudiantes.genruntimeconfig.cache
+C:\xampp\htdocs\WebEstudiantes\obj\Debug\net7.0\ref\WebEstudiantes.dll
+C:\xampp\htdocs\WebEstudiantes\bin\Debug\net7.0\Newtonsoft.Json.dll
+C:\xampp\htdocs\WebEstudiantes\obj\Debug\net7.0\WebEstudiantes.csproj.AssemblyReference.cache
+C:\xampp\htdocs\WebEstudiantes\obj\Debug\net7.0\WebEstud.9FCE2713.Up2Date
+C:\Users\hrodr\Downloads\Nueva carpeta\WebEstudiantes\bin\Debug\net7.0\appsettings.Development.json
+C:\Users\hrodr\Downloads\Nueva carpeta\WebEstudiantes\bin\Debug\net7.0\appsettings.json
+C:\Users\hrodr\Downloads\Nueva carpeta\WebEstudiantes\bin\Debug\net7.0\WebEstudiantes.staticwebassets.runtime.json
+C:\Users\hrodr\Downloads\Nueva carpeta\WebEstudiantes\bin\Debug\net7.0\WebEstudiantes.exe
+C:\Users\hrodr\Downloads\Nueva carpeta\WebEstudiantes\bin\Debug\net7.0\WebEstudiantes.deps.json
+C:\Users\hrodr\Downloads\Nueva carpeta\WebEstudiantes\bin\Debug\net7.0\WebEstudiantes.runtimeconfig.json
+C:\Users\hrodr\Downloads\Nueva carpeta\WebEstudiantes\bin\Debug\net7.0\WebEstudiantes.dll
+C:\Users\hrodr\Downloads\Nueva carpeta\WebEstudiantes\bin\Debug\net7.0\WebEstudiantes.pdb
+C:\Users\hrodr\Downloads\Nueva carpeta\WebEstudiantes\bin\Debug\net7.0\Newtonsoft.Json.dll
+C:\Users\hrodr\Downloads\Nueva carpeta\WebEstudiantes\obj\Debug\net7.0\WebEstudiantes.csproj.AssemblyReference.cache
+C:\Users\hrodr\Downloads\Nueva carpeta\WebEstudiantes\obj\Debug\net7.0\WebEstudiantes.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\hrodr\Downloads\Nueva carpeta\WebEstudiantes\obj\Debug\net7.0\WebEstudiantes.AssemblyInfoInputs.cache
+C:\Users\hrodr\Downloads\Nueva carpeta\WebEstudiantes\obj\Debug\net7.0\WebEstudiantes.AssemblyInfo.cs
+C:\Users\hrodr\Downloads\Nueva carpeta\WebEstudiantes\obj\Debug\net7.0\WebEstudiantes.csproj.CoreCompileInputs.cache
+C:\Users\hrodr\Downloads\Nueva carpeta\WebEstudiantes\obj\Debug\net7.0\WebEstudiantes.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\hrodr\Downloads\Nueva carpeta\WebEstudiantes\obj\Debug\net7.0\WebEstudiantes.RazorAssemblyInfo.cache
+C:\Users\hrodr\Downloads\Nueva carpeta\WebEstudiantes\obj\Debug\net7.0\WebEstudiantes.RazorAssemblyInfo.cs
+C:\Users\hrodr\Downloads\Nueva carpeta\WebEstudiantes\obj\Debug\net7.0\staticwebassets\msbuild.WebEstudiantes.Microsoft.AspNetCore.StaticWebAssets.props
+C:\Users\hrodr\Downloads\Nueva carpeta\WebEstudiantes\obj\Debug\net7.0\staticwebassets\msbuild.build.WebEstudiantes.props
+C:\Users\hrodr\Downloads\Nueva carpeta\WebEstudiantes\obj\Debug\net7.0\staticwebassets\msbuild.buildMultiTargeting.WebEstudiantes.props
+C:\Users\hrodr\Downloads\Nueva carpeta\WebEstudiantes\obj\Debug\net7.0\staticwebassets\msbuild.buildTransitive.WebEstudiantes.props
+C:\Users\hrodr\Downloads\Nueva carpeta\WebEstudiantes\obj\Debug\net7.0\staticwebassets.pack.json
+C:\Users\hrodr\Downloads\Nueva carpeta\WebEstudiantes\obj\Debug\net7.0\staticwebassets.build.json
+C:\Users\hrodr\Downloads\Nueva carpeta\WebEstudiantes\obj\Debug\net7.0\staticwebassets.development.json
+C:\Users\hrodr\Downloads\Nueva carpeta\WebEstudiantes\obj\Debug\net7.0\scopedcss\Shared\MainLayout.razor.rz.scp.css
+C:\Users\hrodr\Downloads\Nueva carpeta\WebEstudiantes\obj\Debug\net7.0\scopedcss\Shared\NavMenu.razor.rz.scp.css
+C:\Users\hrodr\Downloads\Nueva carpeta\WebEstudiantes\obj\Debug\net7.0\scopedcss\bundle\WebEstudiantes.styles.css
+C:\Users\hrodr\Downloads\Nueva carpeta\WebEstudiantes\obj\Debug\net7.0\scopedcss\projectbundle\WebEstudiantes.bundle.scp.css
+C:\Users\hrodr\Downloads\Nueva carpeta\WebEstudiantes\obj\Debug\net7.0\WebEstudiantes.csproj.CopyComplete
+C:\Users\hrodr\Downloads\Nueva carpeta\WebEstudiantes\obj\Debug\net7.0\WebEstudiantes.dll
+C:\Users\hrodr\Downloads\Nueva carpeta\WebEstudiantes\obj\Debug\net7.0\refint\WebEstudiantes.dll
+C:\Users\hrodr\Downloads\Nueva carpeta\WebEstudiantes\obj\Debug\net7.0\WebEstudiantes.pdb
+C:\Users\hrodr\Downloads\Nueva carpeta\WebEstudiantes\obj\Debug\net7.0\WebEstudiantes.genruntimeconfig.cache
+C:\Users\hrodr\Downloads\Nueva carpeta\WebEstudiantes\obj\Debug\net7.0\ref\WebEstudiantes.dll
